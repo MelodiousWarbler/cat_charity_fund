@@ -7,12 +7,11 @@
 ## Технологии и библиотеки
 
 [![Python](https://img.shields.io/badge/Python-3.9-blue?style=flat-square&logo=Python&logoColor=3776AB&labelColor=d0d0d0)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-green?style=flat-square&logo=FastAPI&logoColor=3776AB&labelColor=d0d0d0)](https://fastapi.tiangolo.com/)
-
- - SQLAlchemy (библиотека для работы с реляционными СУБД с применением технологии ORM)
- - Pydantic (библиотека для валидации и сериализации данных)
- - Alembic (инструмент для миграции базы данных)
- - Uvicorn (высокопроизводительный ASGI сервер)
+[![FastAPI](https://img.shields.io/badge/FastAPI-blue?style=flat-square&logo=FastAPI&logoColor=3776AB&labelColor=d0d0d0)](https://fastapi.tiangolo.com/)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-blue?style=flat-square&logo=SQLAlchemy&logoColor=3776AB&labelColor=d0d0d0)](https://www.sqlalchemy.org/)
+[![Pydantic](https://img.shields.io/badge/Pydantic-blue?style=flat-square&logo=Pydantic&logoColor=3776AB&labelColor=d0d0d0)](https://docs.pydantic.dev/latest/)
+[![Alembic](https://img.shields.io/badge/Alembic-blue?style=flat-square&logo=Alembic&logoColor=3776AB&labelColor=d0d0d0)](https://alembic.sqlalchemy.org/en/latest/)
+[![Uvicorn](https://img.shields.io/badge/Uvicorn-blue?style=flat-square&logo=Uvicorn&logoColor=3776AB&labelColor=d0d0d0)](https://www.uvicorn.org/)
 
 ## Как запустить проект
 
