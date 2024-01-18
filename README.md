@@ -7,7 +7,7 @@
 ## Технологии и библиотеки
 
 [![Python](https://img.shields.io/badge/Python-3.9-blue?style=flat-square&logo=Python&logoColor=3776AB&labelColor=d0d0d0)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-green?style=flat-square&logo=Python&logoColor=3776AB&labelColor=d0d0d0)](https://fastapi.tiangolo.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-green?style=flat-square&logo=FastAPI&logoColor=3776AB&labelColor=d0d0d0)](https://fastapi.tiangolo.com/)
 
  - SQLAlchemy (библиотека для работы с реляционными СУБД с применением технологии ORM)
  - Pydantic (библиотека для валидации и сериализации данных)
