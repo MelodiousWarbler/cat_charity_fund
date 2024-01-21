@@ -13,17 +13,16 @@ class ProjectDonationBase(Base):
     )
 
     full_amount = Column(Integer, nullable=False)
-    invested_amount = Column(Integer, default=int)
+    invested_amount = Column(Integer, default=0)
     fully_invested = Column(Boolean, default=False)
     create_date = Column(DateTime, default=datetime.datetime.now)
-    close_date = Column(DateTime)
+    close_date = Column(DateTime, default=None)
 
     def __repr__(self):
-        attributes = map(str, (
-            self.full_amount,
-            self.invested_amount,
-            self.fully_invested,
-            self.create_date,
-            self.close_date,
-        ))
-        return f'{self.__class__.__name__} {", ".join(attributes)}'
+        return (
+            f'Общая сумма: {self.full_amount}'
+            f'Инвестировано: {self.invested_amount}'
+            f'Полностью проинвестировано: {self.fully_invested}'
+            f'Дата создания: {self.create_date}'
+            f'Дата закрытия: {self.close_date}'
+        )

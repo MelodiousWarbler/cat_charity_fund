@@ -5,6 +5,8 @@ from app.schemas.user import UserCreate, UserRead, UserUpdate
 
 router = APIRouter()
 
+DELETE_USER_FORBIDDEN = 'Удаление пользователей запрещено!'
+
 router.include_router(
     fastapi_users.get_auth_router(auth_backend),
     prefix='/auth/jwt',
@@ -22,11 +24,13 @@ router.include_router(
 )
 
 
-@router.delete('/users/{id}', tags=['users'], deprecated=True)
-def delete_user(_: str):
-    """Не используйте удаление, деактивируйте пользователей."""
-
+@router.delete(
+    '/users/{id}',
+    tags=['users'],
+    deprecated=True,
+)
+def delete_user(id: str):
     raise HTTPException(
         status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
-        detail="Удаление пользователей запрещено!",
+        detail=DELETE_USER_FORBIDDEN,
     )

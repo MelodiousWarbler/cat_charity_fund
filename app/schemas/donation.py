@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, PositiveInt
+from pydantic import BaseModel, Extra, PositiveInt
 from pydantic.schema import datetime
 
 
@@ -8,12 +8,11 @@ class DonationBase(BaseModel):
     full_amount: PositiveInt
     comment: Optional[str]
 
+    class Config:
+        extra = Extra.forbid
 
-class DonationCreate(DonationBase):
-    pass
 
-
-class DonationDBShort(DonationBase):
+class DonationView(DonationBase):
     id: int
     create_date: datetime
 
@@ -21,12 +20,8 @@ class DonationDBShort(DonationBase):
         orm_mode = True
 
 
-class DonationDB(DonationDBShort):
+class DonationData(DonationView):
     user_id: int
     invested_amount: int
     fully_invested: bool
     close_date: Optional[datetime]
-
-
-class DonationUpdate(BaseModel):
-    """Схема заглушка для корректной аннотации CRUD класса."""

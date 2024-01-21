@@ -1,25 +1,53 @@
-import datetime
+from datetime import datetime
 
-from app.models import ProjectDonationBase
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.models import CharityProject, Donation
 
 
-def invest(
-    target: ProjectDonationBase, sources: list[ProjectDonationBase]
-) -> list[ProjectDonationBase]:
-    updated = []
-    for investment in sources:
-        amendment = min(
-            investment.full_amount - investment.invested_amount,
-            target.full_amount - target.invested_amount,
-        )
+async def not_empty_object(model, session: AsyncSession):
+    object = await session.execute(
+        select(model).where(model.fully_invested.is_(False))
+    )
+    return object.scalars().all()
 
-        for instance in (investment, target):
-            instance.invested_amount += amendment
-            if instance.invested_amount == instance.full_amount:
-                instance.fully_invested = True
-                instance.close_date = datetime.datetime.now()
 
-        updated.append(investment)
-        if target.fully_invested:
-            break
-    return updated
+def update_object(object, invested_add):
+    object.invested_amount += invested_add
+    if object.invested_amount >= object.full_amount:
+        object.invested_amount = object.full_amount
+        object.fully_invested = True
+        object.close_date = datetime.now()
+    return object
+
+
+def update_project_and_donation(
+    donation,
+    charity_project
+):
+    remain_project = (
+        charity_project.full_amount -
+        charity_project.invested_amount
+    )
+    remain_donation = donation.full_amount - donation.invested_amount
+    charity_project = update_object(
+        charity_project, remain_donation
+    )
+    donation = update_object(
+        donation, remain_project
+    )
+    return donation, charity_project
+
+
+async def invest(session: AsyncSession):
+    donations = await not_empty_object(Donation, session)
+    charity_projects = await not_empty_object(CharityProject, session)
+    for donation in donations:
+        for charity_project in charity_projects:
+            donation, charity_project = update_project_and_donation(
+                donation, charity_project
+            )
+            session.add(donation)
+            session.add(charity_project)
+    return session

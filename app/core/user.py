@@ -2,8 +2,8 @@ from typing import Union
 
 from fastapi import Depends
 from fastapi_users import (
-    BaseUserManager, FastAPIUsers, IntegerIDMixin,
-    InvalidPasswordException
+    BaseUserManager, FastAPIUsers,
+    IntegerIDMixin, InvalidPasswordException
 )
 from fastapi_users.authentication import (
     AuthenticationBackend, BearerTransport, JWTStrategy
@@ -13,11 +13,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.db import get_async_session
-from app.models import User
+from app.models.user import User
 from app.schemas.user import UserCreate
 
-TOKEN_LIFETIME = 3600
-MINIMAL_PASSWORD_LENGTH = 3
+JWT_LIFETIME_SEC = 3600
+MIMIMAL_PASSWORD_LENGH = 3
+TOO_SHORT_PASSWORD = 'Password should be at least 3 characters'
+FORBID_EMAIL_ON_PASSWORD = 'Password should not contain e-mail'
 
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
@@ -28,7 +30,7 @@ bearer_transport = BearerTransport(tokenUrl='auth/jwt/login')
 
 
 def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=settings.secret, lifetime_seconds=TOKEN_LIFETIME)
+    return JWTStrategy(secret=settings.secret, lifetime_seconds=JWT_LIFETIME_SEC)
 
 
 auth_backend = AuthenticationBackend(
@@ -44,13 +46,13 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         password: str,
         user: Union[UserCreate, User],
     ) -> None:
-        if len(password) < MINIMAL_PASSWORD_LENGTH:
+        if len(password) < MIMIMAL_PASSWORD_LENGH:
             raise InvalidPasswordException(
-                reason='Password should be at least 3 characters'
+                reason=TOO_SHORT_PASSWORD
             )
         if user.email in password:
             raise InvalidPasswordException(
-                reason='Password should not contain e-mail'
+                reason=FORBID_EMAIL_ON_PASSWORD
             )
 
 
