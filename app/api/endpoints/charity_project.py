@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.constants import FULLY_INVESTED
 from app.api.validators import (
     access_project_update, check_name_duplicate,
     check_project_exists, check_full_amount,
@@ -9,6 +10,7 @@ from app.api.validators import (
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud.charity_project import charity_project_crud
+from app.crud.donation import donation_crud
 from app.schemas.charity_project import (
     CharityProjectCreate, CharityProjectData, CharityProjectUpdate
 )
@@ -39,10 +41,13 @@ async def create_project(
     session: AsyncSession = Depends(get_async_session),
 ):
     await check_name_duplicate(new_project.name, session)
-    new_project = await charity_project_crud.create(
-        new_project, session
+    open_donations = await donation_crud.get_multi_by_attribute(
+        FULLY_INVESTED, False, session
     )
-    session = await invest(session)
+    new_project = await charity_project_crud.create(
+        new_project, session, commit=False
+    )
+    session.add_all(invest(new_project, open_donations))
     await session.commit()
     await session.refresh(new_project)
     return new_project

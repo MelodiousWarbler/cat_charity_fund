@@ -6,7 +6,7 @@ from app.models import Donation, User
 
 
 class CRUDDonation(CRUDBase):
-    async def get_users_donation(
+    async def get_user_donations(
             self,
             user: User,
             session: AsyncSession

@@ -20,9 +20,9 @@ class CRUDBase:
         return db_obj.scalars().first()
 
     async def get_id_by_name(
-            self,
-            prj_name: str,
-            session: AsyncSession
+        self,
+        prj_name: str,
+        session: AsyncSession
     ):
         project_id = await session.execute(
             select(self.model.id).where(
@@ -42,15 +42,18 @@ class CRUDBase:
         self,
         obj_in,
         session: AsyncSession,
-        user: User = None
+        user: User = None,
+        commit: bool = True,
     ):
         obj_in_data = obj_in.dict()
         if user is not None:
             obj_in_data['user_id'] = user.id
+        obj_in_data['invested_amount'] = 0
         db_obj = self.model(**obj_in_data)
         session.add(db_obj)
-        await session.commit()
-        await session.refresh(db_obj)
+        if commit:
+            await session.commit()
+            await session.refresh(db_obj)
         return db_obj
 
     async def update(
@@ -78,3 +81,16 @@ class CRUDBase:
         await session.delete(db_obj)
         await session.commit()
         return db_obj
+
+    async def get_multi_by_attribute(
+        self,
+        attribute_name: str,
+        attribute_value: str,
+        session: AsyncSession,
+    ):
+        db_objs = await session.execute(
+            select(self.model).where(
+                getattr(self.model, attribute_name) == attribute_value
+            )
+        )
+        return db_objs.scalars().all()

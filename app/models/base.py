@@ -20,9 +20,9 @@ class ProjectDonationBase(Base):
 
     def __repr__(self):
         return (
-            f'Общая сумма: {self.full_amount}'
-            f'Инвестировано: {self.invested_amount}'
-            f'Полностью проинвестировано: {self.fully_invested}'
-            f'Дата создания: {self.create_date}'
+            f'Общая сумма: {self.full_amount}, '
+            f'Инвестировано: {self.invested_amount}, '
+            f'Полностью проинвестировано: {self.fully_invested}, '
+            f'Дата создания: {self.create_date}, '
             f'Дата закрытия: {self.close_date}'
         )

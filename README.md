@@ -50,7 +50,7 @@ pip install -r requirements.txt
 В корневой директории проекта создайте файл .env и заполните его по образцу:
 
 ```
-DATABASE_URL=sqlite+aiosqlite:///./fastapi.db
+DATABASE_URL=sqlite+aiosqlite:///./QRKot.db
 SECRET=<mysecret>
 ```
 
@@ -66,7 +66,7 @@ alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
-Документация доступна по ссылке http://127.0.0.1:8000/docs/ после запуска проекта.
+Документация доступна по [ссылке](http://127.0.0.1:8000/docs/ "Документация") после запуска проекта.
 
 ## Автор проекта
 
