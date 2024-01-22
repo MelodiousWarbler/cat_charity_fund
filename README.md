@@ -50,7 +50,7 @@ pip install -r requirements.txt
 В корневой директории проекта создайте файл .env и заполните его по образцу:
 
 ```
-DATABASE_URL=sqlite+aiosqlite:///./QRKot.db
+DATABASE_URL=sqlite+aiosqlite:///./cat_charity.db
 SECRET=<mysecret>
 ```
 

@@ -6,7 +6,7 @@ from app.models import ProjectDonationBase
 def invest(
     target: ProjectDonationBase,
     sources: list[ProjectDonationBase],
-):
+) -> list[ProjectDonationBase]:
     updated = []
     for investment in sources:
         amendment = min(
