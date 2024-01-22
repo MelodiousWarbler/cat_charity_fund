@@ -11,8 +11,7 @@ class CharityProject(ProjectDonationBase):
 
     def __repr__(self):
         return (
-            super().__repr__()
-            +
+            super().__repr__() +
             f', Название проекта: {self.name}, '
             f'Описание проекта: {self.description}'
         )
